@@ -1,17 +1,18 @@
 package me.projects.kendhia.flickrclient;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.projects.kendhia.flickrclient.Models.Photo;
 
-/**
- * Created by KenDhia on 1/27/2017.
- */
+
 
 public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     List<Photo> photos;
@@ -26,7 +27,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
 
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
+        Photo photo= photos.get(position);
         holder.tv_title.setText(photos.get(position).getTitle());
+        Picasso.with(holder.tv_title.getContext()).load(MainActivity.getImageUrl(photo, "m")).into(holder.iv_image);
+
     }
 
     @Override
@@ -37,4 +41,5 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     public void addItem(Photo photo) {
         photos.add(photo);
     }
+
 }
