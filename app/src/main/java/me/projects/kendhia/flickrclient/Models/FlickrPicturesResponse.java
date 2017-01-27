@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by KenDhia on 1/27/2017.
@@ -12,15 +14,31 @@ import java.util.List;
 
 public class FlickrPicturesResponse {
 
-    List<Picture> pictures;
+    private Photos photos;
+    private String stat;
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public FlickrPicturesResponse() {
-        pictures = new ArrayList<Picture>();
+    public Photos getPhotos() {
+        return photos;
     }
 
-    public static FlickrPicturesResponse parseJSON(String response) {
-        Gson gson = new GsonBuilder().create();
-        FlickrPicturesResponse flickrPicturesResponse = gson.fromJson(response, FlickrPicturesResponse.class);
-        return flickrPicturesResponse;
+    public void setPhotos(Photos photos) {
+        this.photos = photos;
+    }
+
+    public String getStat() {
+        return stat;
+    }
+
+    public void setStat(String stat) {
+        this.stat = stat;
+    }
+
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 }
