@@ -16,7 +16,7 @@ import static me.projects.kendhia.flickrclient.MainActivity.FLICKR_PIC_URL;
 public interface FlickrService {
 
     @GET(FLICKR_PICS)
-    Call<FlickrPicturesResponse> getPhotos();
+    Call<FlickrPicturesResponse> getPhotos(@Query("page") String page);
 
     @GET(FLICKR_PIC_URL)
     Call<FlickrSinglePicRes> getPhoto(@Query("photo_id") String pic_id);
