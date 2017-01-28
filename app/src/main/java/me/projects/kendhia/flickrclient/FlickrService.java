@@ -20,4 +20,7 @@ public interface FlickrService {
 
     @GET(FLICKR_PIC_URL)
     Call<FlickrSinglePicRes> getPhoto(@Query("photo_id") String pic_id);
+
+    @GET(FLICKR_PICS)
+    Call<FlickrPicturesResponse> searchPhotos(@Query("text") String query);
 }
