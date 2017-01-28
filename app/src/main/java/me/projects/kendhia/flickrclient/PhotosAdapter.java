@@ -1,8 +1,12 @@
 package me.projects.kendhia.flickrclient;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
@@ -10,26 +14,44 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.projects.kendhia.flickrclient.Fragments.MainFragment;
+import me.projects.kendhia.flickrclient.Fragments.SinglePic;
 import me.projects.kendhia.flickrclient.Models.Photo;
 
+import static me.projects.kendhia.flickrclient.MainActivity.PHOTO_KEY;
 
 
 public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     List<Photo> photos;
+    FragmentManager fragmentManager;
 
-    public PhotosAdapter() {
+    public PhotosAdapter(FragmentManager fragmentManager) {
         photos = new ArrayList<>();
+        this.fragmentManager = fragmentManager;
     }
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PhotoViewHolder(LayoutInflater.from(parent.getContext()), parent);
+        return new PhotoViewHolder(LayoutInflater.from(parent.getContext()), parent, fragmentManager);
     }
 
     @Override
-    public void onBindViewHolder(PhotoViewHolder holder, int position) {
+    public void onBindViewHolder(PhotoViewHolder holder, final int position) {
         Photo photo= photos.get(position);
         holder.tv_title.setText(photos.get(position).getTitle());
         Picasso.with(holder.tv_title.getContext()).load(MainActivity.getImageUrl(photo, "m")).into(holder.iv_image);
+        holder.iv_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Bundle args = new Bundle();
+                args.putInt(PHOTO_KEY, position);
+                SinglePic singlePic = new SinglePic();
+                singlePic.setArguments(args);
+                fragmentTransaction.replace(R.id.activity_main, singlePic);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
     }
 
@@ -38,6 +60,9 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
         return photos.size();
     }
 
+    public Photo getPhoto(int position) {
+        return photos.get(position);
+    }
     public void addItem(Photo photo) {
         photos.add(photo);
     }

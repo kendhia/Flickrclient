@@ -12,6 +12,7 @@ import java.util.List;
 
 import me.projects.kendhia.flickrclient.EndlessRecyclerOnScrollListener;
 import me.projects.kendhia.flickrclient.FlickrService;
+import me.projects.kendhia.flickrclient.MainActivity;
 import me.projects.kendhia.flickrclient.Models.FlickrPicturesResponse;
 import me.projects.kendhia.flickrclient.Models.Photo;
 import me.projects.kendhia.flickrclient.OnLoadMoreListener;
@@ -24,22 +25,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static me.projects.kendhia.flickrclient.MainActivity.BASE_URL;
+import static me.projects.kendhia.flickrclient.MainActivity.mPhotosAdapter;
 
 
 public class MainFragment extends Fragment implements OnLoadMoreListener {
 
     private View mView;
     private RecyclerView mRecyclerView;
-    private PhotosAdapter mPhotosAdapter;
     private EndlessRecyclerOnScrollListener mEndlessScrollListener;
-
     private int mCurrent_page = 1;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,46 +42,24 @@ public class MainFragment extends Fragment implements OnLoadMoreListener {
         mView = inflater.inflate(R.layout.fragment_main, container, false);
         mRecyclerView = (RecyclerView)mView.findViewById(R.id.recyclerView);
 
-        mPhotosAdapter = new PhotosAdapter();
         mRecyclerView.setAdapter(mPhotosAdapter);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mEndlessScrollListener = new EndlessRecyclerOnScrollListener(gridLayoutManager, this);
         mRecyclerView.addOnScrollListener(mEndlessScrollListener);
-        getNewPhotos();
         return mView;
     }
 
-    void getNewPhotos(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        FlickrService flickrService = retrofit.create(FlickrService.class);
 
-        flickrService.getPhotos(String.valueOf(mCurrent_page)).enqueue(new Callback<FlickrPicturesResponse>() {
-            @Override
-            public void onResponse(Call<FlickrPicturesResponse> call, Response<FlickrPicturesResponse> response) {
-                FlickrPicturesResponse model = response.body();
-                List<Photo> photos = model.getPhotos().getPhoto();
-                for (Photo photo : photos) {
-                    mPhotosAdapter.addItem(photo);
-                    mPhotosAdapter.notifyDataSetChanged();
 
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FlickrPicturesResponse> call, Throwable t) {
-                //Add a snackbare to tell the user what happened
-            }
-        });
+    public static Photo getPhoto(int position) {
+        return mPhotosAdapter.getPhoto(position);
     }
 
     @Override
     public void onLoadMore() {
         mCurrent_page++;
-        getNewPhotos();
+        MainActivity.getNewPhotos(mCurrent_page);
     }
 }
