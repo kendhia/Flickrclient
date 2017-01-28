@@ -24,10 +24,12 @@ import static me.projects.kendhia.flickrclient.MainActivity.PHOTO_KEY;
 public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     List<Photo> photos;
     FragmentManager fragmentManager;
+    boolean replace;
 
-    public PhotosAdapter(FragmentManager fragmentManager) {
+    public PhotosAdapter(FragmentManager fragmentManager, boolean replace) {
         photos = new ArrayList<>();
         this.fragmentManager = fragmentManager;
+        this.replace = replace;
     }
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,7 +37,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(PhotoViewHolder holder, final int position) {
+    public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
         Photo photo= photos.get(position);
         holder.tv_title.setText(photos.get(position).getTitle());
         Picasso.with(holder.tv_title.getContext()).load(MainActivity.getImageUrl(photo, "m")).into(holder.iv_image);
@@ -44,10 +46,17 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
             public void onClick(View view) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle args = new Bundle();
-                args.putInt(PHOTO_KEY, position);
+                args.putString(PHOTO_KEY, MainActivity.getImageUrl(photos.get(position), "m"));
                 SinglePic singlePic = new SinglePic();
                 singlePic.setArguments(args);
-                fragmentTransaction.replace(R.id.activity_main, singlePic);
+
+                if (replace) {
+                    fragmentTransaction.replace(R.id.activity_main, singlePic);
+
+                }
+                else {
+                    fragmentTransaction.add(R.id.activity_searchable, singlePic);
+                }
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

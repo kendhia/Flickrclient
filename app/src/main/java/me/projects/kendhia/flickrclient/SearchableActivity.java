@@ -44,7 +44,7 @@ public class SearchableActivity extends AppCompatActivity {
                 MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
         suggestions.saveRecentQuery(query, null);
 
-        mAdapter = new PhotosAdapter(getFragmentManager());
+        mAdapter = new PhotosAdapter(getFragmentManager(), false);
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));

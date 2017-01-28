@@ -22,21 +22,16 @@ import static me.projects.kendhia.flickrclient.MainActivity.PHOTO_KEY;
 public class SinglePic extends Fragment {
 
     View rootView;
-    Photo mPhoto;
     ImageView mImageView;
-    TextView mTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_single_pic, container, false);
-        int photoPos = getArguments().getInt(PHOTO_KEY);
-        mPhoto = MainFragment.getPhoto(photoPos);
+        String photoURL = getArguments().getString(PHOTO_KEY);
         mImageView = (ImageView)rootView.findViewById(R.id.picture_img);
-        mTextView = (TextView)rootView.findViewById(R.id.title_tv);
-        mTextView.setText(mPhoto.getTitle());
-        Picasso.with(mTextView.getContext()).load(MainActivity.getImageUrl(mPhoto, "c")).into(mImageView);
+        Picasso.with(mImageView.getContext()).load(photoURL).into(mImageView);
         return rootView;
     }
 
