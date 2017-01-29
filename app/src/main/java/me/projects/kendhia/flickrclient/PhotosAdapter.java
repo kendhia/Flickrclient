@@ -44,6 +44,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
         Picasso.with(holder.tv_title.getContext()).load(MainActivity.getImageUrl(photo, "m"))
                 .placeholder(R.drawable.loading).into(holder.iv_image);
 
+        //a click listener for the picture to start it in a full activity's screen
         holder.iv_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

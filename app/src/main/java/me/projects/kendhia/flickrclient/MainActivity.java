@@ -41,9 +41,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String PHOTO_KEY = "photo_url";
     public static final String PHOTO_TITLE = "photo_title";
     private static ProgressDialog ringProgressDialog;
-
-
     public static PhotosAdapter mPhotosAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +57,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * This method is ued to request the new photos and add them to the adapter or show an error
+     * message in case there is a problem.
+     * @param mCurrent_page the number of the page to request
+     * @param context where to show the progress bar
+     */
     public static void getNewPhotos(int mCurrent_page,final Context context){
         if (mCurrent_page == 1) {
             ringProgressDialog = ProgressDialog.show(context, "Please wait ...", "Downloading Images ...", true);
@@ -92,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * This method is used to build the photo's url.
+     * @param photo to extract the the photo information from
+     * @param size of the photo's url to build
+     * @return
+     */
     public static String getImageUrl(Photo photo, String size) {
         String img_src = "https://farm"+photo.getFarm()+".staticflickr.com/"+photo.getServer()+"/"
                 +photo.getId()+"_"+photo.getSecret()+"_" + size +".jpg";

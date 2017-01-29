@@ -12,7 +12,9 @@ import static me.projects.kendhia.flickrclient.MainActivity.FLICKR_PICS;
 import static me.projects.kendhia.flickrclient.MainActivity.FLICKR_PIC_URL;
 
 
-
+/**
+ * The FlickrService interface is used in order to implement the connection with retrofit
+ */
 public interface FlickrService {
 
     @GET(FLICKR_PICS)
