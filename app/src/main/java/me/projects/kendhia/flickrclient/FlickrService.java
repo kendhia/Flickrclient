@@ -24,6 +24,6 @@ public interface FlickrService {
     Call<FlickrSinglePicRes> getPhoto(@Query("photo_id") String pic_id);
 
     @GET(FLICKR_PICS)
-    Call<FlickrPicturesResponse> searchPhotos(@Query("tags") String query,
+    Call<FlickrPicturesResponse> searchPhotos(@Query("text") String query,
                                               @Query("page") String page);
 }
