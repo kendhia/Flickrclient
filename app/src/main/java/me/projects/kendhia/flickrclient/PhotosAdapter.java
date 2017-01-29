@@ -41,7 +41,9 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
         Photo photo= photos.get(position);
         holder.tv_title.setText(photos.get(position).getTitle());
-        Picasso.with(holder.tv_title.getContext()).load(MainActivity.getImageUrl(photo, "m")).into(holder.iv_image);
+        Picasso.with(holder.tv_title.getContext()).load(MainActivity.getImageUrl(photo, "m"))
+                .placeholder(R.drawable.loading).into(holder.iv_image);
+
         holder.iv_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,7 +56,6 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
 
                 if (replace) {
                     fragmentTransaction.replace(R.id.activity_main, singlePic);
-
                 }
                 else {
                     fragmentTransaction.add(R.id.activity_searchable, singlePic);

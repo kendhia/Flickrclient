@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SearchEvent;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String FLICKR_PICS = "rest/?method=flickr.photos.getRecent&api_key=ca370d51a054836007519a00ff4ce59e&per_page=10&format=json&nojsoncallback=1&privacy_filter=1&page=";
     public static final String FLICKR_PIC_URL = "rest/?method=flickr.photos.getSizes&api_key=ca370d51a054836007519a00ff4ce59e&format=json&nojsoncallback=1&photo_id=";
     public static final String PHOTO_KEY = "photo_url";
-    public static final String PHOTO_TITLE = "photo_url";
+    public static final String PHOTO_TITLE = "photo_title";
+    private static ProgressDialog ringProgressDialog;
 
 
     public static PhotosAdapter mPhotosAdapter;
@@ -52,11 +54,17 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.activity_main, new MainFragment());
         fragmentTransaction.commit();
-        getNewPhotos(1);
+        getNewPhotos(1, this);
     }
 
 
-    public static void getNewPhotos(int mCurrent_page){
+    public static void getNewPhotos(int mCurrent_page,final Context context){
+        if (mCurrent_page == 1) {
+            ringProgressDialog = ProgressDialog.show(context, "Please wait ...", "Downloading Images ...", true);
+            ringProgressDialog.setCancelable(true);
+        }
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -68,16 +76,17 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<FlickrPicturesResponse> call, Response<FlickrPicturesResponse> response) {
                 FlickrPicturesResponse model = response.body();
                 List<Photo> photos = model.getPhotos().getPhoto();
+                if (ringProgressDialog != null) {ringProgressDialog.dismiss();}
                 for (Photo photo : photos) {
                     mPhotosAdapter.addItem(photo);
                     mPhotosAdapter.notifyDataSetChanged();
-
                 }
             }
 
             @Override
             public void onFailure(Call<FlickrPicturesResponse> call, Throwable t) {
-                //Add a snackbare to tell the user what happened
+                if (ringProgressDialog != null) {ringProgressDialog.dismiss();}
+                Toast.makeText(context, R.string.connection_error, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -90,16 +99,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static void showSpinner(Context context) {
-        ProgressDialog progress = new ProgressDialog(context);
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false);
-        while(mPhotosAdapter.getItemCount() == 0 ){
-            progress.show();
-        }
-        progress.dismiss();
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
