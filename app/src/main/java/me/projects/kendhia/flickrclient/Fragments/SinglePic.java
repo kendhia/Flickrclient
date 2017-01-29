@@ -17,12 +17,14 @@ import me.projects.kendhia.flickrclient.PhotosAdapter;
 import me.projects.kendhia.flickrclient.R;
 
 import static me.projects.kendhia.flickrclient.MainActivity.PHOTO_KEY;
+import static me.projects.kendhia.flickrclient.MainActivity.PHOTO_TITLE;
 
 
 public class SinglePic extends Fragment {
 
     View rootView;
     ImageView mImageView;
+    TextView mTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,7 +32,10 @@ public class SinglePic extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_single_pic, container, false);
         String photoURL = getArguments().getString(PHOTO_KEY);
+        String photoTitle = getArguments().getString(PHOTO_TITLE);
         mImageView = (ImageView)rootView.findViewById(R.id.picture_img);
+        mTextView = (TextView)rootView.findViewById(R.id.title_tv);
+        mTextView.setText(photoTitle);
         Picasso.with(mImageView.getContext()).load(photoURL).into(mImageView);
         return rootView;
     }

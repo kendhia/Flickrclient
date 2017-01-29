@@ -26,6 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static me.projects.kendhia.flickrclient.MainActivity.BASE_URL;
 import static me.projects.kendhia.flickrclient.MainActivity.mPhotosAdapter;
+import static me.projects.kendhia.flickrclient.MainActivity.showSpinner;
 
 
 public class MainFragment extends Fragment implements OnLoadMoreListener {
@@ -48,6 +49,7 @@ public class MainFragment extends Fragment implements OnLoadMoreListener {
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mEndlessScrollListener = new EndlessRecyclerOnScrollListener(gridLayoutManager, this);
         mRecyclerView.addOnScrollListener(mEndlessScrollListener);
+        //showSpinner(getActivity());
         return mView;
     }
 

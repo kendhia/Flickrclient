@@ -19,6 +19,7 @@ import me.projects.kendhia.flickrclient.Fragments.SinglePic;
 import me.projects.kendhia.flickrclient.Models.Photo;
 
 import static me.projects.kendhia.flickrclient.MainActivity.PHOTO_KEY;
+import static me.projects.kendhia.flickrclient.MainActivity.PHOTO_TITLE;
 
 
 public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
@@ -47,6 +48,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle args = new Bundle();
                 args.putString(PHOTO_KEY, MainActivity.getImageUrl(photos.get(position), "m"));
+                args.putString(PHOTO_TITLE, photos.get(position).getTitle());
                 SinglePic singlePic = new SinglePic();
                 singlePic.setArguments(args);
 

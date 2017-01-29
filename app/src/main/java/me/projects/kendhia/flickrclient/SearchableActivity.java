@@ -24,6 +24,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static me.projects.kendhia.flickrclient.MainActivity.BASE_URL;
+import static me.projects.kendhia.flickrclient.MainActivity.showSpinner;
 
 public class SearchableActivity extends AppCompatActivity {
 
@@ -35,7 +36,7 @@ public class SearchableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchable);
-        String query = getIntent().getStringExtra(SearchableActivity.SEARCH_SERVICE);
+        String query = getIntent().getStringExtra(SearchManager.QUERY);
         if (query == null) {
             startActivity(new Intent(this, MainActivity.class));
             return;
@@ -48,7 +49,9 @@ public class SearchableActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        showSpinner(getApplicationContext());
         doMySearch(query);
+
 
     }
 
